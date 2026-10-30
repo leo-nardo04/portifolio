@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-mono: "Space Mono", monospace;
+
+  --color-slate-950: #260729; /* Fundo */
+  --color-slate-900: #2a2344; /* Cartões */
+  --color-slate-800: #495168; /* Bordas */
+  --color-emerald-500: #ccbd9e; /* Hover e Secundário */
+  --color-emerald-900: #ccbd9e;
+  --color-emerald-400: #d8ccb2; /* Destaques / Tags / Botões */
+
+  --color-slate-400: #9ca3af;
+  --color-slate-300: #d1d5db;
+  --color-slate-200: #e5e7eb;
+  --color-slate-100: #f3f4f6;
+}
+
+.bg-dots {
+  background-image: radial-gradient(#d8ccb230 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #571b3c; /* Usa a cor 3 na barra de rolagem */
+  border-radius: 10px;
+}
