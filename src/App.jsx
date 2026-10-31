@@ -193,10 +193,11 @@ export default function App() {
             <strong className="text-emerald-300 font-semibold">
               estágio ou trainee em Engenharia de Software e Análise de Dados
             </strong>{" "}
-            (ou áreas correlatas) em Belo Horizonte (início em 2027). Com as
-            disciplinas curriculares na reta final, possuo quase total
-            disponibilidade de horário (para 2027 tenho restante 1 matéria e o
-            TCC 2).
+            (ou áreas correlatas) com início previsto para 2027. Cursando o
+            último ano de Engenharia de Computação, tenho apenas uma disciplina
+            teórica e o TCC 2 pendentes. Isso me garante ampla disponibilidade
+            de horário e foco total para uma imersão real no mercado de
+            trabalho.
           </p>
         </div>
       </div>
@@ -210,17 +211,23 @@ export default function App() {
           Trajetória & Projetos
         </h2>
         <BentoGrid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {experiencesData.map((exp) => (
-            <BentoCard
-              key={exp.id}
-              name={exp.title}
-              description={exp.description || exp.summary}
-              badge={exp.category}
-              Icon={exp.icon || getIcon(exp.id)}
-              className="col-span-1"
-              onClick={() => setSelectedExp(exp)}
-            />
-          ))}
+          {experiencesData.map((exp) => {
+            // Resolvemos o ícone aqui para usar tanto no card quanto no modal
+            const resolvedIcon = exp.icon || getIcon(exp.id);
+
+            return (
+              <BentoCard
+                key={exp.id}
+                name={exp.title}
+                description={exp.description || exp.summary}
+                badge={exp.category}
+                Icon={resolvedIcon}
+                className="col-span-1"
+                // Passamos o objeto com o ícone garantido para evitar falhas no modal
+                onClick={() => setSelectedExp({ ...exp, icon: resolvedIcon })}
+              />
+            );
+          })}
         </BentoGrid>
       </div>
 

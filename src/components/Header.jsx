@@ -20,8 +20,8 @@ export default function Header() {
         </div>
 
         <p className="text-slate-200 text-justify text-lg font-medium leading-relaxed max-w-2xl mt-3">
-          Trajetória enriquecida por liderança estudantil, ensino de programação
-          e projetos de extensão. Atualmente reside em Itabira, com mudança
+          Trajetória composta por liderança estudantil, ensino de programação e
+          projetos de extensão. Atualmente reside em Itabira, com mudança
           planeada para Belo Horizonte a partir de 2027.
         </p>
 
