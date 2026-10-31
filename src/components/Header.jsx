@@ -1,4 +1,5 @@
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa6";
+import perfilImg from "../assets/perfil.png";
 
 export default function Header() {
   return (
@@ -57,7 +58,7 @@ export default function Header() {
         <div className="absolute -inset-1 bg-emerald-400 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition duration-500"></div>
         <div className="relative w-36 h-36 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full border-4 border-emerald-400 overflow-hidden bg-slate-900 shadow-2xl">
           <img
-            src="/perfil.png"
+            src={perfilImg}
             alt="Leonardo Tiago"
             className="w-full h-full object-cover transform transition duration-500 group-hover:scale-110"
           />
