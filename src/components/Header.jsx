@@ -18,10 +18,10 @@ export default function Header() {
           </p>
         </div>
 
-        <p className="text-slate-200 text-sm sm:text-base md:text-lg font-medium leading-relaxed max-w-2xl mt-1 sm:mt-2">
+        <p className="text-slate-200 text-justify text-lg font-medium leading-relaxed max-w-2xl mt-3">
           Trajetória enriquecida por liderança estudantil, ensino de programação
           e projetos de extensão. Atualmente reside em Itabira, com mudança
-          planejada para Belo Horizonte a partir de Dez-2026.
+          planeada para Belo Horizonte a partir de 2027.
         </p>
 
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6 text-xs sm:text-sm font-mono pt-2 sm:pt-4">

@@ -1,5 +1,5 @@
 Portifólio Leonardo Tiago Evangelista
-Feito com ajuda de IA - gemini
+Feito com ajuda de IA - gemini e209813 antigrativy
 
 Paleta de cores:
 .color1 { #260729 };
