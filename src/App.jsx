@@ -19,7 +19,7 @@ import {
   FaArrowRight,
   FaChalkboardUser,
   FaCalculator,
-  FaArrowUp, // Ícone novo para o rodapé
+  FaArrowUp,
 } from "react-icons/fa6";
 
 const timelineData = [
@@ -104,13 +104,62 @@ const pipelineSteps = [
   },
 ];
 
+// Configuração dos filtros com cores e IDs correspondentes
+const filterMapping = {
+  dev: {
+    id: "dev",
+    label: "Dev",
+    count: 3,
+    colorClass: "cyan",
+    activeBorder: "border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.4)]",
+    btnActive: "bg-cyan-500/20 border-cyan-500 text-cyan-300",
+    btnHover: "hover:border-cyan-500 hover:text-cyan-300",
+    ids: ["atlas-ej", "kodland", "aeds-monitor"],
+  },
+  dados: {
+    id: "dados",
+    label: "Dados",
+    count: 2,
+    colorClass: "fuchsia",
+    activeBorder: "border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.4)]",
+    btnActive: "bg-fuchsia-500/20 border-fuchsia-500 text-fuchsia-300",
+    btnHover: "hover:border-fuchsia-500 hover:text-fuchsia-300",
+    ids: ["pibic", "microlins"],
+  },
+  ensino: {
+    id: "ensino",
+    label: "Ensino",
+    count: 5,
+    colorClass: "amber",
+    activeBorder: "border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.4)]",
+    btnActive: "bg-amber-500/20 border-amber-500 text-amber-300",
+    btnHover: "hover:border-amber-500 hover:text-amber-300",
+    ids: ["kodland", "aeds-monitor", "esf-english", "microlins", "citinova"],
+  },
+};
+
 export default function App() {
   const [selectedExp, setSelectedExp] = useState(null);
+  const [activeFilter, setActiveFilter] = useState(null); // <-- O estado que estava a faltar
 
-  // Função para voltar ao topo suavemente
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  // Lógica de ordenação: Cartões filtrados vão para o topo
+  const displayExperiences = (() => {
+    if (!activeFilter) return experiencesData;
+    const matched = [];
+    const unmatched = [];
+    experiencesData.forEach((exp) => {
+      if (filterMapping[activeFilter].ids.includes(exp.id)) {
+        matched.push(exp);
+      } else {
+        unmatched.push(exp);
+      }
+    });
+    return [...matched, ...unmatched];
+  })();
 
   return (
     <div className="min-h-screen font-sans bg-slate-950 text-slate-100 bg-dots flex flex-col">
@@ -119,68 +168,7 @@ export default function App() {
         <Header />
       </div>
 
-      {/* 2. TIMELINE INTERATIVA */}
-      <div className="w-[90%] max-w-5xl mx-auto my-12 relative z-10">
-        <h2 className="text-2xl font-bold text-emerald-400 text-center mb-12">
-          Timeline Resumida
-        </h2>
-
-        <div className="flex flex-col md:flex-row items-center justify-between relative px-4">
-          {/* Linha conectora de fundo (cinza) - Mais grossa (h-1) e perfeitamente alinhada */}
-          <div className="absolute left-1/2 md:left-4 right-auto md:right-4 top-0 md:top-2.5 w-1 md:w-auto h-full md:h-1 bg-slate-800 -z-10 transform -translate-x-1/2 md:-translate-x-0 rounded-full"></div>
-
-          {/* Linha de progresso (verde) - Mais grossa (h-1) e preenche até 85% (posição atual) */}
-          <div className="absolute left-1/2 md:left-4 top-0 md:top-2.5 w-1 md:w-[85%] h-[85%] md:h-1 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.5)] -z-10 transform -translate-x-1/2 md:-translate-x-0 rounded-full flex flex-col md:flex-row items-center justify-end md:items-center md:justify-end">
-            {/* Bolinha indicadora do momento atual, fixada na ponta da linha */}
-            <div className="w-4 h-4 rounded-full bg-emerald-400 border-2 border-slate-950 shadow-[0_0_10px_rgba(16,185,129,0.8)] transform translate-y-2 md:translate-y-0 md:translate-x-2 z-10"></div>
-          </div>
-
-          {timelineData.map((item, index) => {
-            // Verifica se o item já é passado/presente (índices 0, 1, 2 e 3)
-            const isPast = index < 4;
-
-            return (
-              <div
-                key={index}
-                onClick={() =>
-                  document
-                    .getElementById("experiencias")
-                    .scrollIntoView({ behavior: "smooth" })
-                }
-                className="relative group cursor-pointer flex flex-col items-center mb-12 md:mb-0 last:mb-0 w-32"
-              >
-                {/* Bolinha da Timeline */}
-                <div
-                  className={`w-6 h-6 rounded-full border-2 border-emerald-400 group-hover:scale-125 transition-all duration-300 z-10 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0)] group-hover:shadow-[0_0_15px_rgba(16,185,129,0.5)] ${
-                    isPast
-                      ? "bg-emerald-500"
-                      : "bg-slate-950 group-hover:bg-emerald-400"
-                  }`}
-                ></div>
-
-                {/* Data */}
-                <span
-                  className={`mt-4 text-sm font-mono group-hover:text-emerald-400 transition-colors text-center ${
-                    isPast ? "text-emerald-300/90" : "text-slate-400"
-                  }`}
-                >
-                  {item.date}
-                </span>
-
-                {/* Tooltip (Hover) */}
-                <div className="absolute bottom-full mb-6 md:mb-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none w-max max-w-[260px] text-center z-20">
-                  <div className="bg-slate-800 text-slate-200 text-xs md:text-sm p-3 rounded-lg shadow-xl border border-emerald-500/30 leading-relaxed">
-                    {item.role}
-                  </div>
-                  <div className="w-3 h-3 bg-slate-800 border-b border-r border-emerald-500/30 transform rotate-45 absolute -bottom-1.5 left-1/2 -translate-x-1/2"></div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* 3. OBJETIVO E DISPONIBILIDADE */}
+      {/* 2. OBJETIVO E DISPONIBILIDADE */}
       <div className="w-[90%] max-w-3xl mx-auto mt-8 mb-16 relative z-10">
         <div className="bg-slate-900/60 backdrop-blur-md border border-emerald-500/20 rounded-2xl p-6 md:p-8 shadow-lg shadow-emerald-900/10 transition-all hover:border-emerald-500/40">
           <h2 className="text-emerald-400 text-center font-mono text-sm mb-6 uppercase tracking-widest flex items-center justify-center gap-3">
@@ -193,27 +181,113 @@ export default function App() {
             <strong className="text-emerald-300 font-semibold">
               estágio ou trainee em Engenharia de Software e Análise de Dados
             </strong>{" "}
-            (ou áreas correlatas) com início previsto para 2027. Cursando o
-            último ano de Engenharia de Computação, tenho apenas uma disciplina
-            teórica e o TCC 2 pendentes. Isso me garante ampla disponibilidade
-            de horário e foco total para uma imersão real no mercado de
-            trabalho.
+            na região de Belo Horizonte, com início previsto para 2027. Cursando
+            o último ano de Engenharia de Computação, tenho apenas uma
+            disciplina teórica e o TCC 2 pendentes. Isso me garante ampla
+            disponibilidade de horário e foco total para uma imersão real no
+            mercado de trabalho.
           </p>
         </div>
       </div>
 
-      {/* 4. CARDS DE EXPERIÊNCIAS */}
+      {/* 3. TIMELINE INTERATIVA */}
+      <div className="w-[90%] max-w-5xl mx-auto my-12 relative z-10">
+        <h2 className="text-2xl font-bold text-emerald-400 text-center mb-12">
+          Timeline Resumida
+        </h2>
+
+        <div className="flex flex-col md:flex-row items-center justify-between relative px-4">
+          <div className="absolute left-1/2 md:left-4 right-auto md:right-4 top-0 md:top-2.5 w-1 md:w-auto h-full md:h-1 bg-slate-800 -z-10 transform -translate-x-1/2 md:-translate-x-0 rounded-full"></div>
+
+          <div className="absolute left-1/2 md:left-4 top-0 md:top-2.5 w-1 md:w-[85%] h-[85%] md:h-1 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.5)] -z-10 transform -translate-x-1/2 md:-translate-x-0 rounded-full flex flex-col md:flex-row items-center justify-end md:items-center md:justify-end">
+            <div className="w-4 h-4 rounded-full bg-emerald-400 border-2 border-slate-950 shadow-[0_0_10px_rgba(16,185,129,0.8)] transform translate-y-2 md:translate-y-0 md:translate-x-2 z-10"></div>
+          </div>
+
+          {timelineData.map((item, index) => {
+            const isPast = index < 4;
+            return (
+              <div
+                key={index}
+                onClick={() =>
+                  document
+                    .getElementById("experiencias")
+                    .scrollIntoView({ behavior: "smooth" })
+                }
+                className="relative group cursor-pointer flex flex-col items-center mb-12 md:mb-0 last:mb-0 w-32"
+              >
+                <div
+                  className={`w-6 h-6 rounded-full border-2 border-emerald-400 group-hover:scale-125 transition-all duration-300 z-10 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0)] group-hover:shadow-[0_0_15px_rgba(16,185,129,0.5)] ${
+                    isPast
+                      ? "bg-emerald-500"
+                      : "bg-slate-950 group-hover:bg-emerald-400"
+                  }`}
+                ></div>
+
+                <span
+                  className={`mt-4 text-sm font-mono group-hover:text-emerald-400 transition-colors text-center ${
+                    isPast ? "text-emerald-300/90" : "text-slate-400"
+                  }`}
+                >
+                  {item.date}
+                </span>
+
+                <div className="absolute bottom-full mb-6 md:mb-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none w-max max-w-[260px] text-center z-20">
+                  <div className="bg-slate-800 text-slate-200 text-xs md:text-sm p-3 rounded-lg shadow-xl border border-emerald-500/30 leading-relaxed">
+                    {item.role}
+                  </div>
+                  <div className="w-3 h-3 bg-slate-800 border-b border-r border-emerald-500/30 transform rotate-45 absolute -bottom-1.5 left-1/2 -translate-x-1/2"></div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 4. CARDS DE EXPERIÊNCIAS COM FILTROS */}
       <div
         id="experiencias"
         className="w-[90%] max-w-[1400px] mx-auto py-16 flex flex-col gap-6 relative z-10"
       >
-        <h2 className="text-2xl font-bold text-emerald-400 text-center mb-4">
+        <h2 className="text-2xl font-bold text-emerald-400 text-center mb-2">
           Trajetória & Projetos
         </h2>
-        <BentoGrid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {experiencesData.map((exp) => {
-            // Resolvemos o ícone aqui para usar tanto no card quanto no modal
+
+        {/* Botões de Filtro */}
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          {Object.values(filterMapping).map((filter) => {
+            const isActive = activeFilter === filter.id;
+            return (
+              <button
+                key={filter.id}
+                onClick={() => setActiveFilter(isActive ? null : filter.id)}
+                className={`px-5 py-2 rounded-full border text-sm font-mono transition-all duration-300 ${
+                  isActive
+                    ? filter.btnActive
+                    : `bg-slate-900 border-slate-700 text-slate-400 ${filter.btnHover}`
+                }`}
+              >
+                {filter.label}{" "}
+                <span className="opacity-70">({filter.count})</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Grelha Ordenada e Destacada */}
+        <BentoGrid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-500">
+          {displayExperiences.map((exp) => {
             const resolvedIcon = exp.icon || getIcon(exp.id);
+
+            let highlightClasses = "";
+            if (activeFilter) {
+              const isMatch = filterMapping[activeFilter].ids.includes(exp.id);
+              if (isMatch) {
+                highlightClasses = `${filterMapping[activeFilter].activeBorder} scale-100 z-10`;
+              } else {
+                highlightClasses =
+                  "border-slate-800/30 opacity-40 scale-[0.98] grayscale-[50%]";
+              }
+            }
 
             return (
               <BentoCard
@@ -222,8 +296,7 @@ export default function App() {
                 description={exp.description || exp.summary}
                 badge={exp.category}
                 Icon={resolvedIcon}
-                className="col-span-1"
-                // Passamos o objeto com o ícone garantido para evitar falhas no modal
+                className={`col-span-1 transition-all duration-500 ease-in-out ${highlightClasses}`}
                 onClick={() => setSelectedExp({ ...exp, icon: resolvedIcon })}
               />
             );
