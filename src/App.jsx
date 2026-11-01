@@ -168,21 +168,20 @@ export default function App() {
         <Header />
       </div>
 
-      {/* 3. TIMELINE INTERATIVA */}
+      {/* 2. TIMELINE INTERATIVA */}
       <div className="w-[90%] max-w-5xl mx-auto my-12 relative z-10">
         <h2 className="text-2xl font-bold text-emerald-400 text-center mb-12">
           Timeline Resumida
         </h2>
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between relative px-0 md:px-4">
-          {/* Linha conectora de fundo (cinza) */}
-          {/* Mobile: Fica à esquerda. Desktop: Fica no topo atravessando. */}
-          <div className="absolute left-[14px] md:left-4 right-auto md:right-4 top-4 md:top-2.5 w-1 md:w-auto h-full md:h-1 bg-slate-800 -z-10 rounded-full"></div>
+          {/* Linha conectora de fundo (cinza) perfeitamente centrada aos 14px */}
+          <div className="absolute left-[14px] md:left-4 right-auto md:right-4 top-[14px] w-1 md:w-auto h-full md:h-1 bg-slate-800 -z-10 rounded-full"></div>
 
-          {/* Linha de progresso (verde) */}
-          <div className="absolute left-[14px] md:left-4 top-4 md:top-2.5 w-1 md:w-[85%] h-[85%] md:h-1 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.5)] -z-10 rounded-full flex flex-col md:flex-row items-center justify-end md:items-center md:justify-end">
-            {/* Bolinha indicadora do momento atual */}
-            <div className="absolute -bottom-2 md:bottom-auto md:-right-2 w-4 h-4 rounded-full bg-emerald-400 border-2 border-slate-950 shadow-[0_0_10px_rgba(16,185,129,0.8)] z-10"></div>
+          {/* Linha de progresso (verde) - h-[78%] no mobile para afastar do 2027 */}
+          <div className="absolute left-[14px] md:left-4 top-[14px] w-1 md:w-[85%] h-[78%] md:h-1 bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.5)] -z-10 rounded-full flex flex-col md:flex-row items-center justify-end md:items-center md:justify-end">
+            {/* Bolinha indicadora do momento atual com alinhamento exato */}
+            <div className="absolute -bottom-1 md:bottom-auto md:-right-1.5 w-4 h-4 rounded-full bg-emerald-400 border-2 border-slate-950 shadow-[0_0_10px_rgba(16,185,129,0.8)] z-10 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:top-1/2 md:-translate-y-1/2"></div>
           </div>
 
           {timelineData.map((item, index) => {
@@ -197,7 +196,7 @@ export default function App() {
                 }
                 className="relative group cursor-pointer flex flex-row md:flex-col items-start md:items-center mb-8 md:mb-0 last:mb-0 md:w-32 w-full gap-4 md:gap-0"
               >
-                {/* Wrapper da bolinha (alinha com a linha vertical no mobile) */}
+                {/* Wrapper da bolinha que fixa o centro em 16px */}
                 <div className="shrink-0 w-8 h-8 flex items-center justify-center">
                   <div
                     className={`w-6 h-6 rounded-full border-2 border-emerald-400 group-hover:scale-125 transition-all duration-300 z-10 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0)] group-hover:shadow-[0_0_15px_rgba(16,185,129,0.5)] ${
@@ -208,7 +207,6 @@ export default function App() {
                   ></div>
                 </div>
 
-                {/* Textos: Visíveis lado a lado no mobile, ou empilhados sob a bolinha no desktop */}
                 <div className="flex flex-col md:items-center mt-1 md:mt-4 text-left md:text-center pb-2 md:pb-0">
                   <span
                     className={`text-sm font-mono group-hover:text-emerald-400 transition-colors ${
@@ -218,13 +216,11 @@ export default function App() {
                     {item.date}
                   </span>
 
-                  {/* Descrição sempre visível no Mobile (pois não há hover) */}
                   <span className="md:hidden text-xs text-slate-300 mt-1.5 pr-4 leading-relaxed">
                     {item.role}
                   </span>
                 </div>
 
-                {/* Tooltip Clássico (Apenas visível em desktop via Hover) */}
                 <div className="hidden md:block absolute bottom-full mb-6 md:mb-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none w-max max-w-[260px] text-center z-20">
                   <div className="bg-slate-800 text-slate-200 text-xs md:text-sm p-3 rounded-lg shadow-xl border border-emerald-500/30 leading-relaxed">
                     {item.role}
