@@ -1,7 +1,17 @@
+import { useState } from "react";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa6";
 import perfilImg from "../assets/perfil.png";
 
 export default function Header() {
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  const handleCopyEmail = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText("leonardotiago7@gmail.com");
+    setEmailCopied(true);
+    // Retorna ao texto "Email" após 2 segundos
+    setTimeout(() => setEmailCopied(false), 2000);
+  };
   return (
     <header className="flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-12 py-6 sm:py-8 md:py-12 border-b border-slate-800">
       <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left gap-4 sm:gap-5">
@@ -22,7 +32,7 @@ export default function Header() {
         <p className="text-slate-200 text-justify text-lg font-medium leading-relaxed max-w-2xl mt-3">
           Trajetória composta por liderança estudantil, ensino de programação e
           projetos de extensão. Atualmente reside em Itabira, com mudança
-          planeada para Belo Horizonte a partir de 2027.
+          planejada para Belo Horizonte a partir de 2027.
         </p>
 
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-6 text-xs sm:text-sm font-mono pt-2 sm:pt-4">
@@ -44,13 +54,17 @@ export default function Header() {
             <FaLinkedin size={18} />
             <span>LinkedIn</span>
           </a>
-          <a
-            href="mailto:leonardotiago7@gmail.com"
-            className="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors py-1 px-2 rounded-md hover:bg-slate-900"
+          <button
+            onClick={handleCopyEmail}
+            className="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors py-1 px-2 rounded-md hover:bg-slate-900 cursor-pointer"
           >
             <FaEnvelope size={18} />
-            <span>Email</span>
-          </a>
+            <span
+              className={`transition-colors duration-300 ${emailCopied ? "text-emerald-400" : ""}`}
+            >
+              {emailCopied ? "Copiado!" : "Email"}
+            </span>
+          </button>
         </div>
       </div>
 
